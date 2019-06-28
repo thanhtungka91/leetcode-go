@@ -15,3 +15,5 @@
     }
     return ans
 }
+
+// demo on https://play.golang.org/p/Jku3ezmr8WW
