@@ -12,7 +12,7 @@ func main()  {
 
 func makeThumbai(filenames []string){
 	type Result struct {
-		stringleng int
+		stringlengh int
 		err error
 	}
 	done := make(chan Result)
@@ -20,26 +20,22 @@ func makeThumbai(filenames []string){
 		fmt.Println("before go")
 		go func(f string) {
 			createDelay(f)
-			fmt.Println("hello", f)
-			if len(f) == 2 {
-				done <- Result{
-					stringleng:len(f),
-					err:nil,
-				}
+			done <- Result{
+				stringlengh:len(f),
+				err:nil,
 			}
+
 
 		}(f)
 
 	}
 
 	for range filenames{
-		fmt.Println("when=====")
-
 
 		result := <- done
 
 		fmt.Println("wait at least one", result)
-		if result.stringleng == 0 {
+		if result.stringlengh == 0 {
 			break
 		}
 
