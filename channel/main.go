@@ -7,9 +7,11 @@ func main()  {
 	// create a new channel
 	c := make(chan int)
 
-	go foo(c)
+	go func() {
+		c <-500
+	}()
 
-	bar(c)
+	fmt.Println(<-c)
 
 
 
