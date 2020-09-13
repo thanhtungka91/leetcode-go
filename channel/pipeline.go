@@ -34,7 +34,7 @@ func main()  {
 	ChanelTwo := make(chan int)
 
 	go sentDataToReceivedChannel(n1,n2,ChanelOne)
-	go receivedDatafromInAndSendToOut(ChanelTwo, ChanelOne)
+	go receivedDataFromInAndSendToOut(ChanelTwo, ChanelOne)
 	readingDataFromIn(ChanelTwo)
 	fmt.Println("done!!!!")
 	fmt.Println(data)
@@ -60,6 +60,7 @@ func readingDataFromIn( in <- chan int)  {
 	sum = 0
 
 	for x2 := range in {
+
 		sum = sum + x2
 	}
 
@@ -67,9 +68,9 @@ func readingDataFromIn( in <- chan int)  {
 }
 
 
-func receivedDatafromInAndSendToOut(out chan <- int, in <-chan int )  {
+func receivedDataFromInAndSendToOut(out chan <- int, in <-chan int )  {
 	for x := range in {
-		fmt.Println(x)
+		fmt.Println("x: ", x)
 		_, ok := data[x]
 		if ok  {
 			fmt.Println("close channel")
