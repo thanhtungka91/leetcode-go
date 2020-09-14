@@ -31,7 +31,7 @@ func (f *celsiusFlag) Set(s string) error {
 }
 
 func (f *celsiusFlag) String() string {
-	return "pk"
+	return fmt.Sprintf("%f", f.Celsius)
 }
 
 func FToC(f Fahrenheit) Celsius {
@@ -41,13 +41,20 @@ func FToC(f Fahrenheit) Celsius {
 func CelsiusFlag(name string, value Celsius, usage string) *Celsius {
 	f := celsiusFlag{value}
 
-	flag.CommandLine.Var(&f, name, usage)
+	flag.CommandLine.Var(&f, name, usage) // this is the most important, parase flag from command line
+
 	return &f.Celsius
 }
 
 var temp = CelsiusFlag("temp", 20.0, "the temparature")
 
+var simpleString = flag.String("test", "test", "test")
+
 func main() {
 	flag.Parse()
 	fmt.Println(*temp)
+	fmt.Println(*simpleString)
 }
+
+// go build celsius_flag.go
+// ./celsius_flag -temp 20F -test hehehehehehe
