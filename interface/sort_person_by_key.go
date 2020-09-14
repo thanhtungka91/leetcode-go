@@ -30,7 +30,11 @@ type peopleSorter struct {
 	by     By
 }
 
-// must 3 function for sort interface {}
+// 3 functions for sort interface {
+// Len return int
+// Swap no return
+// Less  return bool() is less or not
+// } /
 
 func (p *peopleSorter) Len() int {
 	return len(p.people)
@@ -48,7 +52,7 @@ func main() {
 
 	people := []Person{
 		{"Tung", 20, "Hnoi"},
-		{"Yamada", 30, "Tokyo"},
+		{"Yamada", 50, "Tokyo"},
 		{"Alex", 40, "Sanfracisco"},
 	}
 
@@ -56,8 +60,16 @@ func main() {
 		return p1.Name < p2.Name
 	}
 
+	age := func(p1, p2 *Person) bool {
+		return p1.Age < p2.Age
+	}
+
 	By(name).Sort(people)
 
-	fmt.Println(people)
+	fmt.Println("sort by Name", people)
+
+	By(age).Sort(people)
+
+	fmt.Println("sort by Age", people)
 
 }
