@@ -51,10 +51,16 @@ var temp = CelsiusFlag("temp", 20.0, "the temparature")
 var simpleString = flag.String("test", "test", "test")
 
 func main() {
+
 	flag.Parse()
+
 	fmt.Println(*temp)
+
 	fmt.Println(*simpleString)
 }
+
+// similar this one
+//https://play.golang.org/p/Ri4qKYTMYbQ
 
 // go build celsius_flag.go
 // ./celsius_flag -temp 20F -test hehehehehehe
