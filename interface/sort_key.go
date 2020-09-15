@@ -5,83 +5,49 @@ import (
 	"sort"
 )
 
-type earthMass float64
-type au float64
-
-type Planet struct {
-	name     string
-	mass     earthMass
-	distance au
+type Person struct {
+	Name string
+	Age  int
 }
 
-type By func(p1, p2 *Planet) bool
-
-func (by By) Sort(planets []Planet) {
-	ps := &planetSorter{
-		planets: planets,
-		by:      by, // The Sort method's receiver is the function (closure) that defines the sort order.
-	}
-	sort.Sort(ps)
+// overwrite for Sprintln
+func (p Person) String() string {
+	return fmt.Sprintf("%s: %d", p.Name, p.Age)
 }
 
-// planetSorter joins a By function and a slice of Planets to be sorted.
-type planetSorter struct {
-	planets []Planet
-	by      By // Closure used in the Less method.
-}
+// ByAge implements sort.Interface for []Person based on
+type ByAge []Person
 
-// Len is part of sort.Interface.
-func (s *planetSorter) Len() int {
-	return len(s.planets)
-}
+func (a ByAge) Len() int           { return len(a) }
+func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByAge) Less(i, j int) bool { return a[i].Age < a[j].Age }
 
-// Swap is part of sort.Interface.
-func (s *planetSorter) Swap(i, j int) {
-	s.planets[i], s.planets[j] = s.planets[j], s.planets[i]
-}
+type ByName []Person
 
-// Less is part of sort.Interface. It is implemented by calling the "by" closure in the sorter.
-func (s *planetSorter) Less(i, j int) bool {
-	return s.by(&s.planets[i], &s.planets[j])
-}
+func (a ByName) Len() int           { return len(a) }
+func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByName) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
-var planets = []Planet{
-	{"Mercury", 0.055, 0.4},
-	{"Venus", 0.815, 0.7},
-	{"Earth", 1.0, 1.0},
-	{"Mars", 0.107, 1.5},
-}
-
-// ExampleSortKeys demonstrates a technique for sorting a struct type using programmable sort criteria.
 func main() {
-	// Closures that order the Planet structure.
-	name := func(p1, p2 *Planet) bool {
-		return p1.name < p2.name
+	people := []Person{
+		{"Bob", 31},
+		{"John", 42},
+		{"Michael", 17},
+		{"Jenny", 26},
 	}
 
-	mass := func(p1, p2 *Planet) bool {
-		return p1.mass < p2.mass
-	}
+	fmt.Println(people)
 
-	distance := func(p1, p2 *Planet) bool {
-		return p1.distance < p2.distance
-	}
+	sort.Sort(ByAge(people))
+	fmt.Println(people)
 
-	decreasingDistance := func(p1, p2 *Planet) bool {
-		return distance(p2, p1)
-	}
+	sort.Slice(people, func(i, j int) bool {
+		return people[i].Age > people[j].Age
+	})
+	fmt.Println("sort by Slice", people)
 
-	// Sort the planets by the various criteria.
-	By(name).Sort(planets)
-	fmt.Println("By name:", planets)
+	sort.Sort(ByName(people))
 
-	By(mass).Sort(planets)
-	fmt.Println("By mass:", planets)
-
-	By(distance).Sort(planets)
-	fmt.Println("By distance:", planets)
-
-	By(decreasingDistance).Sort(planets)
-	fmt.Println("By decreasing distance:", planets)
+	fmt.Println("By Name", people)
 
 }
