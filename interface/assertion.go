@@ -10,12 +10,20 @@ func (s square) Perimeter() float64 {
 	return s.X
 }
 
+func (s square) Area() float64 {
+	return s.X * s.X
+}
+
 type circle struct {
 	R float64
 }
 
-func (s circle) Area() float64 {
-	return 3.14 * s.R
+func (c circle) Area() float64 {
+	return 3.14 * c.R
+}
+
+func (c circle) Perimeter() float64 {
+	return c.R * 2
 }
 
 type Shape interface {
@@ -23,28 +31,32 @@ type Shape interface {
 	Perimeter() float64
 }
 
-func (s square) Area() float64{
-	return s.X*s.X
-}
+func interfaceFunction(sh Shape) {
 
-func (s circle) Perimeter() float64 {
-	return s.R*2
-}
+	_, ok := sh.(circle)
+	if ok {
+		fmt.Println("this is a circle")
+	}
 
-func interfacFunction(shape Shape){
-	fmt.Println(shape.Area())
+	v, ok := sh.(square)
+	if ok {
+		fmt.Println("this is a square", v)
+	}
+
+	fmt.Println(sh.Area())
 }
 
 // n
-func main()  {
+func main() {
 	x := square{
 		10,
 	}
-	 y :=circle{
-	 	100,
-	 }
-	interfacFunction(x)
-	interfacFunction(y)
+	y := circle{
+		100,
+	}
 
+	interfaceFunction(x)
+	fmt.Println("===== circle ====")
+	interfaceFunction(y)
 
 }
