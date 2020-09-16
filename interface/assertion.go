@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type square struct {
 	X float64
@@ -46,6 +48,19 @@ func interfaceFunction(sh Shape) {
 	fmt.Println(sh.Area())
 }
 
+func checkInterface(sh interface{}) {
+	fmt.Println("====check type of interface ===")
+	switch v := sh.(type){
+	case square:
+		fmt.Println("it is square")
+	case circle:
+		fmt.Println("it is circle")
+	default:
+		fmt.Println(v)
+	}
+
+}
+
 // n
 func main() {
 	x := square{
@@ -56,7 +71,12 @@ func main() {
 	}
 
 	interfaceFunction(x)
-	fmt.Println("===== circle ====")
+
 	interfaceFunction(y)
+
+	fmt.Println("===== cccc ====")
+
+	checkInterface(x)
+	checkInterface(y)
 
 }
